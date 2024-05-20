@@ -1,0 +1,14 @@
+<h1>Conferences</h1>
+
+<%= link_to 'New Conference', new_conference_path %>
+
+<ul>
+  <% @conferences.each do |conference| %>
+    <li>
+      <%= link_to conference.title, conference %>
+      ( <%= conference.date %> )
+      <%= link_to 'Edit', edit_conference_path(conference) %> |
+      <%= link_to 'Destroy', conference, method: :delete, data: { confirm: 'Are you sure?' } %>
+    </li>
+  <% end %>
+</ul>

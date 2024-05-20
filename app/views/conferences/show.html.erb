@@ -1,0 +1,35 @@
+<h1><%= @conference.title %></h1>
+<p><%= @conference.description %></p>
+<p>Date: <%= @conference.date %></p>
+
+<h2>Registrations</h2>
+<ul>
+  <% @registrations.each do |registration| %>
+    <li><%= registration.user.name %></li>
+  <% end %>
+</ul>
+
+<% if current_user %>
+  <% if @registrations.any? { |r| r.user == current_user } %>
+    <%= button_to 'Unregister', conference_registration_path(@conference, @registrations.find { |r| r.user == current_user }), method: :delete %>
+  <% else %>
+    <%= button_to 'Register', conference_registrations_path(@conference) %>
+  <% end %>
+<% end %>
+
+<h2>Feedback</h2>
+<ul>
+  <% @feedbacks.each do |feedback| %>
+    <li><%= feedback.user.name %>: <%= feedback.comment %></li>
+  <% end %>
+</ul>
+
+<% if current_user %>
+  <%= form_with(model: [ @conference, @conference.feedbacks.new ], local: true) do |form| %>
+    <div>
+      <%= form.label :comment %>
+      <%= form.text_area :comment %>
+    </div>
+    <%= form.submit 'Submit Feedback' %>
+  <% end %>
+<% end %>
